@@ -3,6 +3,7 @@ import {
     is_type,
     make_singleton,
     make_pool,
+    make_factory,
 } from "./patterns";
 
 test("is_identifier valid", () => {
@@ -89,4 +90,16 @@ test("make_pool", () => {
             pool.push_back(obj);
         }
 }`);
-})
+});
+
+test("make_factory", () => {
+    expect(()=> make_factory("!@#$Z%", "object")).toThrow("Invalid factory class name");
+    expect(()=> make_factory("factory", "!@#$Z%")).toThrow("Invalid object type");
+    expect(make_factory("factory", "object")).toBe(
+`class factory {
+    public:
+        object* create() {
+            return new object();
+        }
+}`);
+});

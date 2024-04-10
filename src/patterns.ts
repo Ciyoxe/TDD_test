@@ -53,3 +53,7 @@ export function make_pool(pool_class: string, object_class: string) {
         }
 }`);
 }
+
+export function make_factory(factory_class: string, object_type: string) {
+
+}
