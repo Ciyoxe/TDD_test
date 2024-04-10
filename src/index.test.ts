@@ -2,6 +2,7 @@ import {
     is_identifier,
     is_type,
     make_singleton,
+    make_pool,
 } from "./patterns";
 
 test("is_identifier valid", () => {
@@ -64,6 +65,28 @@ test("make_singleton", () => {
                 instance = new hello();
             }
             return instance;
+        }
+}`);
+});
+
+test("make_pool", () => {
+    expect(()=> make_pool("!@#$Z%", "hello")).toThrow("Invalid pool class name");
+    expect(()=> make_pool("hello", "!@#$Z%")).toThrow("Invalid object class name");
+    expect(make_pool("pool", "object")).toBe(
+`class pool {
+    private:
+        std::vector<object*> pool;
+    public:
+        object* get() {
+            if (pool.empty()) {
+                return new object();
+            }
+            object* obj = pool.back();
+            pool.pop_back();
+            return obj;
+        }
+        void put(object* obj) {
+            pool.push_back(obj);
         }
 }`);
 })

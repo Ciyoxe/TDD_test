@@ -27,3 +27,7 @@ export function make_singleton(classname: string) {
         }
 }`);
 }
+
+export function make_pool(pool_class: string, object_class: string) {
+
+}
