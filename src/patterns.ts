@@ -9,3 +9,7 @@ export function is_type(type: string) {
         /^(const)?\s*[a-zA-Z_]+[a-zA-Z0-9_]*(<[a-zA-Z0-9_]+>)?(\*|&)*$/
     ) !== null;
 }
+
+export function make_singleton(classname: string) {
+
+}

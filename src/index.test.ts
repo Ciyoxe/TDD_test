@@ -1,6 +1,7 @@
 import {
     is_identifier,
     is_type,
+    make_singleton,
 } from "./patterns";
 
 test("is_identifier valid", () => {
@@ -50,3 +51,19 @@ test("is_type invalid", () => {
     expect(is_type("int>>")).toBe(false);
     expect(is_type("??_int>>int")).toBe(false);
 });
+
+test("make_singleton", () => {
+    expect(()=> make_singleton("!@#$Z%")).toThrow("Invalid class name");
+    expect(make_singleton("hello")).toBe(
+`class hello {
+    private:
+        hello* instance = nullptr;
+    public:
+        static hello* get_instance() {
+            if (instance == nullptr) {
+                instance = new hello();
+            }
+            return instance;
+        }
+}`);
+})
