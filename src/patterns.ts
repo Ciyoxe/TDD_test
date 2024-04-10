@@ -11,5 +11,19 @@ export function is_type(type: string) {
 }
 
 export function make_singleton(classname: string) {
-
+    if (!is_identifier(classname)) {
+        throw new Error("Invalid class name");
+    }
+    return (
+`class ${classname} {
+    private:
+        ${classname}* instance = nullptr;
+    public:
+        static ${classname}* get_instance() {
+            if (instance == nullptr) {
+                instance = new ${classname}();
+            }
+            return instance;
+        }
+}`);
 }
