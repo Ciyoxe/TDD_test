@@ -55,5 +55,17 @@ export function make_pool(pool_class: string, object_class: string) {
 }
 
 export function make_factory(factory_class: string, object_type: string) {
-
+    if (!is_identifier(factory_class)) {
+        throw new Error("Invalid factory class name");
+    }
+    if (!is_type(object_type)) {
+        throw new Error("Invalid object type");
+    }
+    return (
+`class ${factory_class} {
+    public:
+        ${object_type}* create() {
+            return new ${object_type}();
+        }
+}`);
 }
