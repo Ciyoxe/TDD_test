@@ -1,5 +1,6 @@
 import {
-    is_identifier
+    is_identifier,
+    is_type,
 } from "./patterns";
 
 test("is_identifier valid", () => {
@@ -23,4 +24,29 @@ test("is_identifier special symbols", () => {
     expect(is_identifier("&hello")).toBe(false);
     expect(is_identifier("he@#%")).toBe(false);
     expect(is_identifier("helloXSS!")).toBe(false);
+});
+
+test("is_type valid", () => {
+    expect(is_type("int")).toBe(true);
+    expect(is_type("float")).toBe(true);
+    expect(is_type("string")).toBe(true);
+    expect(is_type("bool")).toBe(true);
+    expect(is_type("void")).toBe(true);
+    expect(is_type("vec<float>")).toBe(true);
+    expect(is_type("vec<_a>")).toBe(true);
+    expect(is_type("int*")).toBe(true);
+    expect(is_type("int**")).toBe(true);
+    expect(is_type("const int&")).toBe(true);
+    expect(is_type("const int*")).toBe(true);
+    expect(is_type("const int**")).toBe(true);
+});
+
+test("is_type invalid", () => {
+    expect(is_type("")).toBe(false);
+    expect(is_type("int*int")).toBe(false);
+    expect(is_type("int*int**")).toBe(false);
+    expect(is_type("int*int*int")).toBe(false);
+    expect(is_type("int<<")).toBe(false);
+    expect(is_type("int>>")).toBe(false);
+    expect(is_type("??_int>>int")).toBe(false);
 });
