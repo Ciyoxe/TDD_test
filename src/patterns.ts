@@ -29,5 +29,27 @@ export function make_singleton(classname: string) {
 }
 
 export function make_pool(pool_class: string, object_class: string) {
-
+    if (!is_identifier(pool_class)) {
+        throw new Error("Invalid pool class name");
+    }
+    if (!is_identifier(object_class)) {
+        throw new Error("Invalid object class name");
+    }
+    return (
+`class ${pool_class} {
+    private:
+        std::vector<${object_class}*> pool;
+    public:
+        ${object_class}* get() {
+            if (pool.empty()) {
+                return new ${object_class}();
+            }
+            ${object_class}* obj = pool.back();
+            pool.pop_back();
+            return obj;
+        }
+        void put(${object_class}* obj) {
+            pool.push_back(obj);
+        }
+}`);
 }
